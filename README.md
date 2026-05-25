@@ -1,100 +1,78 @@
-# 🌱 AgriScan AI - Crop Disease Detection
+# � Crop Disease Detector
 
-A modern, professional Streamlit application for detecting crop diseases using deep learning and the PlantVillage dataset.
+A Streamlit application that uses a trained TensorFlow model to detect crop diseases from leaf images and display plant health recommendations.
 
-## ✨ Features
+## ✨ What this project contains
 
-### 🔍 AI Diagnoser
-- Upload crop leaf images for instant disease detection
-- Real-time AI analysis with confidence scores
-- Detailed disease information including:
-  - Pathogen cause (scientific names)
-  - Transmission methods
-  - Treatment recommendations
-- **Session History Table**: Track all diagnoses in the current session
-- **Interactive Table Management**: Delete specific rows or clear entire history
+- `app.py` – main Streamlit app with two pages: **Scan Crop** and **View Results**
+- `crop_disease_model.h5` – trained TensorFlow/Keras model loaded by `app.py`
+- `class_names.json` – model label mapping for the 14 supported classes
+- `disease_database.py` – dictionary with 38 disease and healthy entries for diagnosis details
+- `requirements.txt` – project dependencies
+- `runtime.txt` – Python runtime version
+- `check_model.py` – optional utility script that loads `model.h5` and prints category count
+- `dataset/` – training/validation image folders used by `app.py` to generate dataset statistics
 
-### 📊 Analytics Dashboard
-- **5 Key Metric Cards**:
-  1. Total PlantVillage Dataset (54,306 images)
-  2. Dataset Categories (38 disease classes)
-  3. Current Session Uploads (dynamic counter)
-  4. Model Accuracy (95.28%)
-  5. Active Pathogen Alerts (diseased plants detected)
-- **Interactive Charts**:
-  - Crop distribution bar chart
-  - Health status pie chart
-  - Session-specific plant distribution
-- **Session Statistics**: Real-time analysis of current session data
+## 🚀 Features
 
-## 🎨 Design Features
+- Upload a leaf image in JPG or PNG format
+- Run inference with `crop_disease_model.h5`
+- Show prediction confidence and plant status
+- Look up cause, transmission, and treatment recommendations from `disease_database.py`
+- Keep a scan history for the current session
+- Clear history and reset the upload counter
+- Display dataset statistics and charts on the **View Results** page
 
-- Clean, modern SaaS interface
-- Soft green agricultural color palette
-- Professional typography (Inter font family)
-- Smooth animations and hover effects
-- Responsive layout with proper spacing
-- Accessible color contrasts
+## 🧠 How the app works
 
-## 🚀 Getting Started
+- `app.py` loads the model from `crop_disease_model.h5` using `tf.keras.models.load_model`
+- It loads `class_names.json` and maps raw model labels to human-readable disease keys
+- `disease_database.py` is used to provide cause, transmission, and rectification text for each diagnosis
+- Image uploads are resized to `224x224`, normalized, and predicted by the model
+- Session state stores `upload_count`, `history`, and upload form state across navigation
 
-### Prerequisites
+## 📊 Actual counts in this project
+
+- `class_names.json` contains: **14** labels
+- `disease_database.py` contains: **38** entries
+- `requirements.txt` uses UTF-16 encoding and includes:
+  - `streamlit`
+  - `tensorflow==2.15.0`
+  - `numpy`
+  - `pandas`
+  - `pillow`
+  - `plotly`
+  - `matplotlib`
+  - `h5py`
+- `runtime.txt` specifies: `python-3.11`
+
+## 📁 File usage notes
+
+- `app.py` reads dataset statistics from `dataset/train`
+- `app.py` loads `crop_disease_model.h5`; the app does not use `model.h5`
+- `check_model.py` is a separate verification utility that currently loads `model.h5`
+
+## ▶️ Run the app
+
+Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### Run the Application
+Launch Streamlit:
+
 ```bash
 streamlit run app.py
 ```
 
-## 📁 Project Structure
+## 💡 Notes
 
-```
-├── app.py                  # Main Streamlit application
-├── disease_database.py     # Disease information database (38 classes)
-├── model.h5               # Trained TensorFlow model
-├── requirements.txt       # Python dependencies
-└── test_images/          # Sample images for testing
-```
-
-## 🧠 Model Information
-
-- **Architecture**: TensorFlow/Keras CNN
-- **Dataset**: PlantVillage (54,306 images)
-- **Classes**: 38 disease categories across 14 crop types
-- **Accuracy**: 95.28%
-
-## 📋 Supported Crops & Diseases
-
-The model can detect diseases in:
-- Apple, Blueberry, Cherry, Corn, Grape, Orange
-- Peach, Pepper (Bell), Potato, Raspberry, Soybean
-- Squash, Strawberry, Tomato
-
-## 🔄 Session State Features
-
-The app maintains session state for:
-- **Upload Counter**: Tracks total uploads in current session
-- **Diagnosis History**: Stores all predictions with plant names, diseases, and recommendations
-- **Persistent Data**: History persists across page navigation within the same session
-
-## 🛠️ Technologies Used
-
-- **Streamlit**: Web application framework
-- **TensorFlow**: Deep learning model
-- **Plotly**: Interactive data visualizations
-- **Pandas**: Data manipulation and display
-- **PIL**: Image processing
-
-## 📝 License
-
-This project uses the PlantVillage dataset for educational and research purposes.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+- The app has two sidebar menu options:
+  - **Scan Crop**: upload images and view diagnosis details
+  - **View Results**: see dataset metrics, crop distribution, and session analytics
+- The project displays both dataset-level charts and session-level charts using Plotly and Matplotlib
 
 ---
 
-**Built with ❤️ for farmers and agricultural researchers**
+**Crop Disease Detector** – built for leaf-level disease scanning and session analytics with a trained TensorFlow model.
